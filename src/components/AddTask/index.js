@@ -19,7 +19,7 @@ function AddTasks() {
   return (
     <div className='head'>
 
-      <Button variant="success" onClick={handleShow}>
+      <Button variant="warning" onClick={handleShow}>
        + Add a new Coloumn
       </Button>
       <Modal show={show} onHide={handleClose}>
@@ -44,22 +44,33 @@ function AddTasks() {
       <Card>
         
         <Card.Content>
+        <Card.Description style={{height:'200px'}}>
         <div style={{display:'flex',justifyContent:'space-between'}}>
-            <div className='fields'>
-                
+            <div className='fields'>    
                         <input value={title} 
                         id='input'
-                        style={{ border: 0  }}
+                        style={{ border: 0 ,fontWeight:'bold' }}
                         onChange={(e)=>setTitle(e.target.value)}
                         />
-               
             </div>   
             <div>
                 <a onClick={()=>document.getElementById('input').focus()}><Icon name='edit'/></a>
                 <a><Icon name='trash'/></a>
             </div>
+
+            <div style={{position:'absolute' , bottom:0}}>
+                <Button
+                  variant="success"
+                  size="sm"
+                  style={{ margin: " 0px 0px 14px 210px" }}
+                  
+                >
+                  <Icon name="plus" size="small" />
+                  Task
+                </Button>
+             </div>
         </div>
-        <Card.Description style={{height:'200px'}}>
+        
             
         </Card.Description>
         </Card.Content>

@@ -17,9 +17,3 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.fields input:focus {
-  font-weight: bold;
-  border: 0;
-  font-size: 15px;
-}
