@@ -1,22 +1,49 @@
 import React ,{useState} from 'react'
-import { Icon,Card} from 'semantic-ui-react'
+import { Icon,Card, List} from 'semantic-ui-react'
 import { Button ,Modal,Form} from 'react-bootstrap';
 
 
 function RenderTasks({title,list,setList}) {
   const[titleValue,setValue]=useState(title)
+  const [button,setButton]=useState('Add')
   const [taskTitle,setTitle]=useState('')
   const [taskDesc,setDescription]=useState('')
+  const [editIndex,setIndex]=useState('')
   const [taskList,setTaskList]=useState([])
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   
   const addTasks=function(){
+    if(button==='Add'){
+      const temp=[...taskList]
+      temp.push({taskTitle:taskTitle,description:taskDesc})
+      setTaskList(temp)
+      setShow(false)
+    }
+    else{
+      const temp=[...taskList]
+      temp.splice(editIndex,1,{taskTitle:taskTitle,description:taskDesc})
+      setTaskList(temp)
+      setShow(false)
+      setButton('Add')
+    }
+    setTitle('')
+    setDescription('')
+  }
+
+  const deleteItem=function(item,index){
     const temp=[...taskList]
-    temp.push({taskTitle:taskTitle,description:taskDesc})
+    temp.splice(index,1)
     setTaskList(temp)
-    setShow(false)
+  }
+
+  const editItem=function(item,index){
+    setShow(true)
+    setIndex(index)
+    setButton('Update')
+    setTitle(item.taskTitle)
+    setDescription(item.description)
   }
 
   return (
@@ -25,25 +52,29 @@ function RenderTasks({title,list,setList}) {
               <Card.Content>
                 <Card.Description style={{height:'200px'}}>
                 <div >
-                    <div style={{display:'flex',justifyContent:'space-between'}}>
-                      <div className='fields'>    
+                   
+                      <div >    
                                   <input value={titleValue} 
                                   id='input'
                                   style={{ border: 0 ,fontWeight:'bold' }}
                                   onChange={(e)=>setValue(e.target.value)}
                                   />
                       </div>   
-                      <div>
-                            <a><Icon name='edit'/></a>
-                            <a ><Icon name='trash'/></a>
-                      </div>
-                    </div>
+                    
                     {
                       taskList && taskList.map((item,index)=>{
-                        return <li>
-                          <span>{item.taskTitle}</span><br/>
-                          <span>{item.description}</span>
-                        </li>
+                        return<List divided >
+                          <List.Item style={{display:'flex',justifyContent:'space-between'}}>
+                            <List.Content>
+                              <List.Header>{item.taskTitle}</List.Header>
+                              <List.Description>{item.description}</List.Description>
+                            </List.Content>
+                            <div style={{marginLeft:'70%'}}>
+                              <a onClick={()=>editItem(item,index)}><Icon name='edit'/></a>
+                              <a onClick={()=>deleteItem(item,index)}><Icon name='trash'/></a>
+                            </div>
+                          </List.Item>
+                        </List>
                       })
                     }
                     <div style={{position:'absolute' , bottom:0}}>
@@ -82,7 +113,7 @@ function RenderTasks({title,list,setList}) {
                   Close
                 </Button>
                 <Button variant="danger" onClick={addTasks} >
-                  Add
+                 {button}
                 </Button>
               </Modal.Footer>
             </Modal>
