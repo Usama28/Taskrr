@@ -8,21 +8,16 @@ function AddTasks() {
 
     const [show, setShow] = useState(false);
     const [title,setTitle]=useState('')
-    const [list,setList]=useState([])
-    const [showCard,setShowCard]=useState(false)
+    const [list ,setList]=useState([])
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const addCard=function(){
-      const tempList=[...list]
-      tempList.push(<AddTask title={title} setTitle={setTitle}/>)
-      setList(tempList)
-      setShow(false)
-      console.log(list)
-  }
-  const showIndex=function(index){
-console.log('in**',index)
+  const addTask=function(){
+    const tempArray=[...list]
+    tempArray.push(<AddTask title={title} />)
+    setList(tempArray)
+    setShow(false)
   }
   return (
     <div className='head'>
@@ -30,15 +25,6 @@ console.log('in**',index)
       <Button variant="warning" onClick={handleShow}>
        + Add a new Coloumn
       </Button>
-
-      <Grid >
-        {list && 
-        list.map((item,index)=>{
-          return <Grid.Row>
-                    {item}
-                </Grid.Row>
-        })}
-      </Grid>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -53,12 +39,24 @@ console.log('in**',index)
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="danger" onClick={addCard}>
+          <Button variant="danger" onClick={addTask} >
             Add
           </Button>
         </Modal.Footer>
       </Modal>
 
+      <Grid >
+        <Grid.Row columns={3}>
+          {
+            list && list.map(item=>{
+              return<Grid.Column style={{marginTop:'3%'}}>
+                {item}
+              </Grid.Column>
+    
+            })
+          }
+        </Grid.Row>
+      </Grid>
      
     </div>
   );
