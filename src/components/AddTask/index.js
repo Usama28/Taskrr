@@ -1,27 +1,45 @@
 import React ,{useState} from 'react'
 import { Button ,Modal,Form} from 'react-bootstrap';
-import { Card,Icon,Input} from 'semantic-ui-react'
+import { Card,Icon,Grid} from 'semantic-ui-react'
+import AddTask from '../RenderTask'
 
 
 function AddTasks() {
 
     const [show, setShow] = useState(false);
     const [title,setTitle]=useState('')
-    const [focus,setFocus]=useState(false)
+    const [list,setList]=useState([])
+    const [showCard,setShowCard]=useState(false)
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-//   const getFocus=function(){
-//     document.getElementById('input').focus()
-//   }
-
+  const addCard=function(){
+      const tempList=[...list]
+      tempList.push(<AddTask title={title} setTitle={setTitle}/>)
+      setList(tempList)
+      setShow(false)
+      console.log(list)
+  }
+  const showIndex=function(index){
+console.log('in**',index)
+  }
   return (
     <div className='head'>
 
       <Button variant="warning" onClick={handleShow}>
        + Add a new Coloumn
       </Button>
+
+      <Grid >
+        {list && 
+        list.map((item,index)=>{
+          return <Grid.Row>
+                    {item}
+                </Grid.Row>
+        })}
+      </Grid>
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add new Coloumn</Modal.Title>
@@ -35,47 +53,13 @@ function AddTasks() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="danger" onClick={handleClose}>
+          <Button variant="danger" onClick={addCard}>
             Add
           </Button>
         </Modal.Footer>
       </Modal>
 
-      <Card>
-        
-        <Card.Content>
-        <Card.Description style={{height:'200px'}}>
-        <div style={{display:'flex',justifyContent:'space-between'}}>
-            <div className='fields'>    
-                        <input value={title} 
-                        id='input'
-                        style={{ border: 0 ,fontWeight:'bold' }}
-                        onChange={(e)=>setTitle(e.target.value)}
-                        />
-            </div>   
-            <div>
-                <a onClick={()=>document.getElementById('input').focus()}><Icon name='edit'/></a>
-                <a><Icon name='trash'/></a>
-            </div>
-
-            <div style={{position:'absolute' , bottom:0}}>
-                <Button
-                  variant="success"
-                  size="sm"
-                  style={{ margin: " 0px 0px 14px 210px" }}
-                  
-                >
-                  <Icon name="plus" size="small" />
-                  Task
-                </Button>
-             </div>
-        </div>
-        
-            
-        </Card.Description>
-        </Card.Content>
-    
-    </Card>
+     
     </div>
   );
 }
